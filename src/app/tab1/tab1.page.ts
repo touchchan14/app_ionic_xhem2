@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { count } from 'angular-pipes/utils/utils';
 declare var cv : any;
- /// new line
-var avg_arr : any [][] = [];  // เก็บ ต ของ center ไว้
-
+var avg_arr : any [][] = [];
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -15,14 +12,15 @@ export class Tab1Page {
   image:string|ArrayBuffer
   //base64 ที่ไว้รับค่ามาจาก func opencv
   output:string
-
   perimiterSize: number;
   areaSize: number;
   contour: any;
+  // avg_arr : any [][][];  // เก็บ ต ของ center ไว้
 
-  constructor() {
+  constructor( ) {
     console.log(cv)
-    //Object.assign(this, fields);
+    // this.avg_arr = avg_arr;
+    console.log("avg_arr",avg_arr)
   }
   
 
@@ -50,111 +48,135 @@ export class Tab1Page {
       }
      })
   }
-  testProcessing(image){
+  testProcessing(image)
+  {
+    // Input Image 
     let srcMat = cv.imread(image);
-    let displayMat = srcMat.clone();
-    let circlesMat = new cv.Mat();
-    let M = cv.Mat.ones(5, 5, cv.CV_8U); 
-    let ksize = new cv.Size(3, 3);
-    let anchor = new cv.Point(-1, -1);
 
-    //***  */
-    // * Array find circle
-    var collect_radius : any[] = [];
-    var collect_center : any[] = [];
-    var length_x : Array<number>;
-    var length_y : Array<number>;
-    length_x = [] 
-    length_y = [] 
-   
-    var sum_radious : number;
-    let sum_radious_result : number;
-    sum_radious = 0;
-    sum_radious_result = 0;
-    let c : number;
-    let max_x : number;
-    let max_y : number;
-    let min_x : number;
-    let min_y : number;
-    c = 0;
-    max_x = 0;
-    max_y = 0;
-    min_x = 0;
-    min_y = 0;
-    let color = new cv.Scalar(255, 125, 0);
-    // let color2 = new cv.Scalar(125, 58, 125);
-    // let color3 = new cv.Scalar(0, 251, 125);
+    // // * Array find circle
+    // var avg_arr : any|Array<number> [][] = [];  // เก็บ ต ของ center ไว้
 
-    ///*   array distance
-    var x1,y1,x2,y2 : number;
-    let sumx : number;
-    let sumy : number;
-    let sumxy : number;
-    let distance_xy : number;
 
-    var arr_distance : Array<number>;
-    arr_distance = []
-    var arr_distance_a1 : Array<number>;
-    arr_distance_a2 = []
-    var arr_distance_a2 : Array<number>;
-    arr_distance_a2 = []
-    var arr_distance_a3 : Array<number>;
-    arr_distance_a3 = []
-    var arr_distance_a4 : Array<number>;
-    arr_distance_a4 = []
+
+    ///** global variable for findLineByLeastSquares function*/
     
-    let z = 0 ; 
-
-    // var collect_new_center = [];
-    let rectangleColor = new cv.Scalar(123, 255, 125);
-    
-    ///* Divide column by distance
-    let length_column = 8;
-    // let length_row = 12;
-
-    ///* Fix row and column  
-      //// collect pointer in collect_radius and collect_center
-    var column0 = [];
-    var column_A = [];
-    var column_B = [];
-    var column_C = [];
-    var column_D = [];
-    var column_E = [];
-    var column_F = [];
-    var column_G = [];
-    var column_H = [];
-    /// new line
+      /* new line */
     var result_values_x:any = [];
     var result_values_y:any = [];
+      
 
-    //**Other count global in "main1_Drawcircle" function variable
+
+    ///**  global variable for "main1_Drawcircle" function  */
     let countb = 0; 
+    ///** cv.clone for return */
+    let eiei = new cv.Mat();
 
-    /*
-    Clear image declease noise
-    */
-    cv.cvtColor(srcMat, srcMat, cv.COLOR_RGBA2GRAY);
-    //cv.blur(srcMat, srcMat, ksize, anchor, cv.BORDER_DEFAULT);
-    cv.blur(srcMat, srcMat, ksize, anchor, cv.BORDER_DEFAULT);
-    cv.GaussianBlur(srcMat, srcMat, ksize, 0, 0, cv.BORDER_DEFAULT);
-    //cv.GaussianBlur(srcMat, srcMat, ksize, 0, 0, cv.BORDER_DEFAULT);
-    //cv.Canny(srcMat, srcMat, 50, 200, 3, false);
-    cv.dilate(srcMat, srcMat, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
 
     /*****************************
      * To use function Here
      ****************************/
     main1_Drawcircle(srcMat);
-    // srcMat = displayMat;
+    return eiei;
+    // console.log("avg_arr",avg_arr)
     // predefined1(srcMat);
+
+
+    // *** deep clone  results Array *** //
+    // avg_arr = [...avg_arr2];
+
 
     /***************************
      * Add function
      ***************************/
+     
     function main1_Drawcircle (imga)
 
     {
-      // * find circle algorithm    
+      let displayMat = imga.clone();
+      let circlesMat = new cv.Mat();
+      let M = cv.Mat.ones(5, 5, cv.CV_8U); 
+      let ksize = new cv.Size(3, 3);
+      let anchor = new cv.Point(-1, -1);
+
+      //***  */
+      // * Array find circle
+      var collect_radius : any[] = [];
+      var collect_center : any[] = [];
+      var length_x : Array<number>;
+      var length_y : Array<number>;
+      length_x = [] 
+      length_y = [] 
+    
+      var sum_radious : number;
+      let sum_radious_result : number;
+      sum_radious = 0;
+      sum_radious_result = 0;
+      let c : number;
+      let max_x : number;
+      let max_y : number;
+      let min_x : number;
+      let min_y : number;
+      c = 0;
+      max_x = 0;
+      max_y = 0;
+      min_x = 0;
+      min_y = 0;
+      let color = new cv.Scalar(255, 125, 0);
+      // let color2 = new cv.Scalar(125, 58, 125);
+      // let color3 = new cv.Scalar(0, 251, 125);
+
+      ///*   array distance
+      var x1,y1,x2,y2 : number;
+      let sumx : number;
+      let sumy : number;
+      let sumxy : number;
+      let distance_xy : number;
+
+      var arr_distance : Array<number>;
+      arr_distance = []
+      var arr_distance_a1 : Array<number>;
+      arr_distance_a2 = []
+      var arr_distance_a2 : Array<number>;
+      arr_distance_a2 = []
+      var arr_distance_a3 : Array<number>;
+      arr_distance_a3 = []
+      var arr_distance_a4 : Array<number>;
+      arr_distance_a4 = []
+      
+      let z = 0 ; 
+
+      // var collect_new_center = [];
+      let rectangleColor = new cv.Scalar(123, 255, 125);
+      
+      ///* Divide column by distance
+      let length_column = 8;
+      // let length_row = 12;
+
+      ///* Fix row and column  
+        //// collect pointer in collect_radius and collect_center
+      var column0 = [];
+      var column_A = [];
+      var column_B = [];
+      var column_C = [];
+      var column_D = [];
+      var column_E = [];
+      var column_F = [];
+      var column_G = [];
+      var column_H = [];
+
+      /*
+       * Clear image declease noise
+       */
+
+      cv.cvtColor(imga, imga, cv.COLOR_RGBA2GRAY);
+      cv.blur(imga, imga, ksize, anchor, cv.BORDER_DEFAULT);
+      cv.GaussianBlur(imga, imga, ksize, 0, 0, cv.BORDER_DEFAULT);
+      cv.dilate(imga, imga, M, anchor, 1, cv.BORDER_CONSTANT, cv.morphologyDefaultBorderValue());
+
+
+      /* 
+       * find circle algorithm  
+       */
       cv.HoughCircles(imga, circlesMat, cv.HOUGH_GRADIENT, 1, 50, 60, 40, 1, 50);
 
       for (let i = 0; i < circlesMat.cols; ++i) 
@@ -164,11 +186,8 @@ export class Tab1Page {
           let radius = circlesMat.data32F[i * 3 + 2];
 
           let center = new cv.Point(x, y);
-          //cv.circle(displayMat, center, radius, color, 3);
           collect_radius.push(radius);
           collect_center.push(center);
-          // var centerx = ~~center.x;
-          // var centery = ~~center.y;
 
           length_x.push(center.x);
           length_y.push(center.y);
@@ -200,11 +219,11 @@ export class Tab1Page {
             return a-b
           }
         );
-        /// * end using sort to find radius length
         
-        
-      console.log("Length array y : ",sort_length_y.length);
-      console.log("length array x : ",sort_length_x.length);
+      // console.log("Length array y : ",sort_length_y.length);
+      // console.log("length array x : ",sort_length_x.length);
+
+
       min_y = sort_length_y[0];
       max_y = (sort_length_y[sort_length_y.length-1]);
       min_x = sort_length_x[0];
@@ -236,7 +255,7 @@ export class Tab1Page {
         // cv.circle(displayMat, collect_center[i], sum_radious_result, [0, 0, 0, 255], 3);
       }
 
-      ////* create array to collect distance
+      //* create array to collect distance
       for (let i = 0; i < 4; i++) 
       {
         // console.log("Array",tt); 
@@ -285,6 +304,7 @@ export class Tab1Page {
       
       //*** sort the corner find shortest distance*/
         //*** clone an arrat */
+      console.log("sort the corner find shortest distance")
       let sort_a1 = [...arr_distance_a1];
       let sort_a2 = [...arr_distance_a2];
       let sort_a3 = [...arr_distance_a3];
@@ -356,6 +376,7 @@ export class Tab1Page {
         //*** 
 
       //**Collect pointer's sorted array */
+      console.log("Collect pointer's sorted array")
       let countAA = 0;
       let countSS = 0;
       var col_p_ar = [];
@@ -384,6 +405,7 @@ export class Tab1Page {
         countAA = 1;
       }
       console.log(col_p_ar);
+      console.log("col_p_ar");
         //**************/ Clear string //******* */
       if (countAA != 0 )
       {
@@ -465,6 +487,7 @@ export class Tab1Page {
       /*
        *find new point for draw new circle   
        */
+      console.log("find new point for draw new circle")
       let k;
       let kk; 
       /// new line
@@ -502,6 +525,7 @@ export class Tab1Page {
           /**********
           *After Regression. Collect in new array   
           ************/
+         console.log("After Regression. Collect in new array")
          for (k in avg_arr)  //A-H , 0-7
          {
           countb++;
@@ -531,6 +555,7 @@ export class Tab1Page {
            *end draw new circle
           **********/
 
+        // return displayMat;
       } 
 
       // console.log("1 , 2",avg_arr[1][0]); // [1] = a-h / 0-7, [0] = at 0 /* show 1*/ */ 
@@ -554,6 +579,7 @@ export class Tab1Page {
           }
         }
       }
+      eiei = displayMat.clone();
     }
 
     function findLineByLeastSquares(values_x : any, values_y : any,countsss : any) 
@@ -563,7 +589,10 @@ export class Tab1Page {
       var sum_xy = 0;
       var sum_xx = 0;
       var count = 0;
-  
+    //   /// new line
+    // var result_values_x:any = [];
+    // var result_values_y:any = [];
+
       /*
         * We'll use those variables for faster read/write access.
         */
@@ -647,17 +676,15 @@ export class Tab1Page {
       
     }
 
-    function predefined1 (image2)
+    function predefined1 (image2)  // image2 = srcMat
     {
       let gray = new cv.Mat();
       let opening = new cv.Mat();
       let coinsBg = new cv.Mat();
-      //let distTrans = new cv.Mat();
       cv.cvtColor(image2, gray, cv.COLOR_RGBA2GRAY, 0);
       cv.threshold(gray, gray, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU);
       let ksize = new cv.Size(5, 5);
       let anchor = new cv.Point(-1, -1);
-      //let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8U);
       let M = cv.Mat.ones(5, 5, cv.CV_8U);
       cv.blur(gray, gray, ksize, anchor, cv.BORDER_DEFAULT);
       cv.dilate(gray, opening, M);
@@ -670,29 +697,40 @@ export class Tab1Page {
       let contours = new cv.MatVector();
       let hierarchy = new cv.Mat();   
       
-      // let displayMat = dst.clone(); // get result img name *dst 
-      let displayMat = coinsBg.clone(); // get result img name *dst 
+      // let displayMat2 = dst.clone(); // get result img name *dst 
+      let displayMat2 = coinsBg.clone(); // get result img name *dst 
       // return coinsBg
       // bounding rect
-  
-      cv.findContours(displayMat, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+
+      let lengx : number[]=[]; 
+      let lengy : number[]=[]; 
+
+      cv.findContours(displayMat2, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
       let cnt = contours.get(0);
       let rotatedRect = cv.minAreaRect(cnt);
       let vertices = cv.RotatedRect.points(rotatedRect);
       let contoursColor = new cv.Scalar(255, 255, 255);
       let rectangleColor = new cv.Scalar(123, 255, 125);
-      cv.drawContours(displayMat, contours, 0, contoursColor, 1, 8, hierarchy, 100);
+      cv.drawContours(displayMat2, contours, 0, contoursColor, 1, 8, hierarchy, 100);
       // You can try more different parameters
       for (let i = 0; i < 4; i++) 
       {
-        cv.line(displayMat, vertices[i], vertices[(i + 1) % 4], rectangleColor, 2, cv.LINE_AA, 0);
-      // cv.line(displayMat, vertices[i], vertices[(i + 1) % 4], rectangleColor, 4 = size of line, cv.LINE_AA, 0);
+        cv.line(displayMat2, vertices[i], vertices[(i + 1) % 4], rectangleColor, 2, cv.LINE_AA, 0);     // cv.line(displayMat2, vertices[i], vertices[(i + 1) % 4], rectangleColor, 4 = size of line, cv.LINE_AA, 0);
+        console.log(vertices[i]);
+        let num3 = (vertices[i].x).valueOf() 
+        let num4 = (vertices[i].y).valueOf() 
+        lengx.push(num3);
+        lengy.push(num4);
       }
+      console.log(lengx);
+      console.log(lengy);
+      console.log(Math.abs(lengx[0]-lengx[3]))
+      console.log(Math.abs(lengy[0]-lengy[1]))
+
+        return displayMat2
     }
 
-    return displayMat
-      
-
+ 
 }
   bufferToBase64(mat){
     let canvas=document.createElement('canvas')

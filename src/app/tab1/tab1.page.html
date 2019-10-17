@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Tab One
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="welcome-card">
+      <!-- <img src="/assets/firefox.jpg" alt="" /> -->
+      <ion-card-header>
+        <!--
+        <ion-card-subtitle>Get Started</ion-card-subtitle>        -->
+        <ion-card-title >Chamistry Test</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>ลองใช้ opencv</p>
+      </ion-card-content>
+  </ion-card>
+    <div class="ion-padding">
+      <input type="file" (change)="inputImage($event)">
+      <ion-row>
+        <ion-col size="6">
+          <ion-label>Original</ion-label>
+          <ion-img style="width: 500px;" src="{{image}}"></ion-img>
+        </ion-col>
+        <ion-col size="6">
+          <ion-label>Output</ion-label>
+          <ion-img style="width: 500px;" src="{{output}}"></ion-img>
+        </ion-col>
+      </ion-row>
+    </div>
+</ion-content>
